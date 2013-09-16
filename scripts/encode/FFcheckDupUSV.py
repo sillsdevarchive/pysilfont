@@ -27,15 +27,13 @@ def splitfn(fn): # Split filename into path, base and extension
 
 def UniStr(u):
 	if u:
-		return "U+" + string.zfill(string.upper(hex(u)[2:]), 4)# Copyright (c) 2013 SIL International
-# Released under the MIT License (http://en.wikipedia.org/wiki/MIT_License)
+		return "U+" + string.zfill(string.upper(hex(u)[2:]), 4)
 
 	else:
 		return "No USV" #length same as above
 
 def AddUSV(usvs,usv,glyph):
-	if not usvs.has_key(usv):# Copyright (c) 2013 SIL International
-# Released under the MIT License (http://en.wikipedia.org/wiki/MIT_License)
+	if not usvs.has_key(usv):
 
 		usvs[usv] = [glyph]
 	else:
@@ -71,8 +69,7 @@ fn = opath+obase+oext
 print 'Opening ' + fn
 outf = open(fn, "w")
 
-#** Main processing# Copyright (c) 2013 SIL International
-# Released under the MIT License (http://en.wikipedia.org/wiki/MIT_License)
+#** Main processing#
 
 # Process unicode and altunicode for all glyphs
 usvs={}
