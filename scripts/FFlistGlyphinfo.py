@@ -5,8 +5,8 @@
 # usage: python FFlistGlyphinfo.py [sourcefont.sfd] [output file name]
 # from http://projects.palaso.org/projects/pysilfont
 #
-# Copyright (c) 2013 SIL International
-# Released under the MIT License (http://en.wikipedia.org/wiki/MIT_License)
+# Copyright (c) 2013, SIL International  (http://www.sil.org)
+# Released under the MIT License (http://sil.mit-license.org)
 
 import fontforge, types,sys
 
