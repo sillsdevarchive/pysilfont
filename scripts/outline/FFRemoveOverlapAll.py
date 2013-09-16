@@ -6,7 +6,7 @@
 # usage: python FFRemoveOverlapAll.py [sourcefont.sfd] [resultfont.sfd]
 # from http://projects.palaso.org/projects/pysilfont
 #
-# Copyright (c) 2013, SIL International
+# Copyright (c) 2013, SIL International (http://www.sil.org)
 # Released under the MIT license cited below:
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
