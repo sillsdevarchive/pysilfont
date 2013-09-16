@@ -5,10 +5,10 @@
 # and to implement open font design best practises in the various internal fields.
 # You need a recent version of fontforge with its python module.
 # This works on all font formats fontforge supports.
-# Thanks to Martin Hosken for his help.
 # from http://projects.palaso.org/projects/pysilfont
+# Written by Nicolas Spalinger (Thanks to Martin Hosken for his help).
 #
-# Copyright (c) 2013, Nicolas Spalinger, SIL International
+# Copyright (c) 2013, SIL International  (http://www.sil.org)
 # Released under the MIT license cited below:
 #
 # Permission is hereby granted, free of charge, to any person obtaining a copy
