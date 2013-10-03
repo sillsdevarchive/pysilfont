@@ -9,7 +9,6 @@ Copyright (c) 2013, SIL International (http://www.sil.org)
 Released under the MIT License (http://sil.mit-license.org)
 '''
 
-import sys, fontforge
 from silfont.fontforge.framework import execute
 
 def doit(source, args) :
