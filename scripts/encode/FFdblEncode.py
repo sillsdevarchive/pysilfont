@@ -10,14 +10,8 @@ Copyright (c) 2013, SIL International  (http://www.sil.org)
 Released under the MIT License (http://sil.mit-license.org)
 '''
 
-import fontforge, sys, string, os.path
+import fontforge, sys, string
 from silfont.fontforge.framework import execute
-
-def UniStr(u):
-	if u:
-		return "U+{0:04X}".format(u)
-	else:
-		return "No USV" #length same as above
 
 def doit(font, args) :
 	if not args.input : args.input = args.infont.replace('.sfd', 'DblEnc.txt')
@@ -39,9 +33,7 @@ def doit(font, args) :
 		ousvs=[g.unicode]
 		oalt=g.altuni
 		if oalt != None:
-			print oalt
 			for au in oalt:
-				print au
 				ousvs.append(au[0]) # (may need to check variant flag)
 		dbl = dbl_encode[glyph]
 		g.unicode = dbl[0]
@@ -50,12 +42,14 @@ def doit(font, args) :
 	logf.close()
 	return font
 
-#execute(doit, options = [
-#    ('input', {'nargs': '?', 'help': 'Input CSV text file'}),
-#    ('log', {'nargs' : '?', 'help': 'Log file to output'})])
+def UniStr(u):
+	if u:
+		return "U+{0:04X}".format(u)
+	else:
+		return "No USV" #length same as above
 
 execute(doit, options = [
 	('-i','--input',{'help': 'Input CSV text file'}),
 	('-o','--output',{'dest': 'outfont', 'help': 'Output the font here'}),
-	('-l','--log',{'help': 'Lgo file to output'})])
+	('-l','--log',{'help': 'Log file to output'})])
 

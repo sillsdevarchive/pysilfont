@@ -7,7 +7,7 @@ or as a macro within fontforge. Handles commandline attribute parsing.
 The module pulls attribute strings from the calling module to help it.
 '''
 
-import sys, argparse, shlex
+import sys, argparse, shlex, os
 import fontforge
 
 def execute(fn, options = None) :
