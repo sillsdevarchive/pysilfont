@@ -1,19 +1,19 @@
 #!/usr/bin/env python
-#
-# FFRemoveOverlapAll.py
-# FontForge: Remove overlap on all glyphs in font
-# Written by Victor Gaultney
-# usage: python FFRemoveOverlapAll.py [sourcefont.sfd] [resultfont.sfd]
-# from http://projects.palaso.org/projects/pysilfont
-#
-# Copyright (c) 2013, SIL International (http://www.sil.org)
-# Released under the MIT License (http://sil.mit-license.org)
 
-import sys, fontforge
+'''Remove overlap on all glyphs in font'''
+__menuentry__ = 'FFRemoveOverlapAll'
+__author__ = 'Victor Gaultney'
+__url__ = 'http://projects.palaso.org/projects/pysilfont'
+__copyright__ = '''
+Copyright (c) 2013, SIL International (http://www.sil.org)
+Released under the MIT License (http://sil.mit-license.org)
+'''
 
-source = fontforge.open(sys.argv[1])
-result = sys.argv[2]
+from silfont.fontforge.framework import execute
 
-for glyph in source:
-	source[glyph].removeOverlap()
-source.save(result)
+def doit(source, args) :
+	for glyph in source:
+		source[glyph].removeOverlap()
+	return source
+
+execute(doit)
