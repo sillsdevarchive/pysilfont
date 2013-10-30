@@ -1,12 +1,14 @@
 #!/usr/bin/env python
-#
-# FFlistRefNum.py
-# FontForge: Report Glyph name, Number of references (components)
-# usage: python FFlistRefNum.py [sourcefont.sfd] [output file name]
-# from http://projects.palaso.org/projects/pysilfont
-#
-# Copyright (c) 2013, SIL International  (http://www.sil.org)
-# Released under the MIT License (http://sil.mit-license.org)
+
+'''FFlistRefNum.py
+FontForge: Report Glyph name, Number of references (components)
+usage: python FFlistRefNum.py [sourcefont.sfd] [output file name]'''
+__url__ = 'http://projects.palaso.org/projects/pysilfont'
+__copyright__ = 'Copyright (c) 2013, SIL International  (http://www.sil.org)'
+__license__ = 'Released under the MIT License (http://opensource.org/licenses/MIT)'
+__author__ = 'David Raymond'
+__version__ = '0.0.1'
+__menuentry__ = 'FFlistRefNum'
 
 import fontforge, sys, string
 

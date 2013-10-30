@@ -1,12 +1,14 @@
 #!/usr/bin/env python
-#
-# FFcheckDupUSV.py
-# FontForge: Check for duplicate USVs in unicode or altuni fields
-# usage: python FFcheckDupUSV.py [sourcefont.sfd] [output file name]
-# from http://projects.palaso.org/projects/pysilfont
-#
-# Copyright (c) 2013 SIL International
-# Released under the MIT License (http://en.wikipedia.org/wiki/MIT_License)
+
+'''FFcheckDupUSV.py
+FontForge: Check for duplicate USVs in unicode or altuni fields
+usage: python FFcheckDupUSV.py [sourcefont.sfd] [output file name] '''
+__url__ = 'http://projects.palaso.org/projects/pysilfont'
+__copyright__ = 'Copyright (c) 2013, SIL International  (http://www.sil.org)'
+__license__ = 'Released under the MIT License (http://opensource.org/licenses/MIT)'
+__author__ = 'David Raymond'
+__version__ = '0.0.1'
+__menuentry__ = 'FFcheckDupUSV'
 
 import fontforge, sys, string
 

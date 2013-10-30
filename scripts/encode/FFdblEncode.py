@@ -1,14 +1,14 @@
 #!/usr/bin/env python
-#
-'''Double encode all glyphs based on double encoding data in a file
+
+'''FFdblEncode.py
+FontForge: Double encode all glyphs based on double encoding data in a file
 Lines in file should look like: "LtnSmARetrHook",U+F236,U+1D8F'''
+__url__ = 'http://projects.palaso.org/projects/pysilfont'
+__copyright__ = 'Copyright (c) 2013, SIL International  (http://www.sil.org)'
+__license__ = 'Released under the MIT License (http://opensource.org/licenses/MIT)'
+__author__ = 'David Raymond'
 __version__ = '0.0.1'
 __menuentry__ = 'FFdblEncode'
-__url__ = 'http://projects.palaso.org/projects/pysilfont'
-__copyright__ = '''
-Copyright (c) 2013, SIL International  (http://www.sil.org)
-Released under the MIT License (http://sil.mit-license.org)
-'''
 
 import fontforge, sys, string
 from silfont.fontforge.framework import execute
