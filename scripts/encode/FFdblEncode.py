@@ -13,10 +13,17 @@ Released under the MIT License (http://sil.mit-license.org)
 import fontforge, sys, string
 from silfont.fontforge.framework import execute
 
+opts = [
+	('-i','--input',{'help': 'Input CSV text file'}),
+	('-o','--output',{'dest': 'outfont', 'help': 'Output the font here'}),
+	('-l','--log',{'help': 'Log file to output'})]
+
 def doit(font, args) :
 	if not args.input : args.input = args.infont.replace('.sfd', 'DblEnc.txt')
 	if not args.log : args.log = args.infont.replace('.sfd', 'DblEnc.log')
+	print 'Opening ' + args.input
 	inpf = open(args.input, 'r')
+	print 'Opening ' + args.log
 	logf = open(args.log, 'w')
 # Create dbl_encode list from lines
 	dbl_encode = {}
@@ -48,8 +55,4 @@ def UniStr(u):
 	else:
 		return "No USV" #length same as above
 
-execute(doit, options = [
-	('-i','--input',{'help': 'Input CSV text file'}),
-	('-o','--output',{'dest': 'outfont', 'help': 'Output the font here'}),
-	('-l','--log',{'help': 'Log file to output'})])
-
+execute(doit, options=opts)
