@@ -1,12 +1,10 @@
 #!/usr/bin/env python
-'''Report Glyph name, Number of references (components)'''
-__version__ = '0.0.1'
-__menuentry__ = 'Not_needed'
+'FontForge: Report Glyph name, Number of references (components)'
 __url__ = 'http://projects.palaso.org/projects/pysilfont'
-__copyright__ = '''
-Copyright (c) 2013, SIL International  (http://www.sil.org)
-Released under the MIT License (http://sil.mit-license.org)
-'''
+__copyright__ = 'Copyright (c) 2013, SIL International  (http://www.sil.org)'
+__license__ = 'Released under the MIT License (http://opensource.org/licenses/MIT)'
+__author__ = 'David Raymond'
+__version__ = '0.0.1'
 
 import fontforge, sys, string
 from silfont.fontforge.framework import execute
@@ -17,17 +15,12 @@ opts = [
 
 
 def doit(font, args):
-	# Open the output file
 	if not args.output : args.output = args.infont.replace('.sfd', 'RefNum.txt')
 	print 'Opening ' + args.output
 	outf = open(args.output, 'w')
 
-	#*** Main processing
-
 	outf.write("# glyphs with number of components\n\n")
-
 	for glyph in font:
-
 		gname=font[glyph].glyphname
 		ref = font[glyph].references
 		if ref is None:
