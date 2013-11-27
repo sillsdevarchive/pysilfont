@@ -1,10 +1,14 @@
 #!/usr/bin/python
 
-'''
-Module to wrap a fontforge type script so that it can be used either standalone
+'''Module to wrap a fontforge type script so that it can be used either standalone
 or as a macro within fontforge. Handles commandline attribute parsing.
+The module pulls attribute strings from the calling module to help it.'''
+__url__ = 'http://projects.palaso.org/projects/pysilfont'
+__copyright__ = 'Copyright (c) 2013, SIL International (http://www.sil.org)'
+__license__ = 'Released under the MIT License (http://opensource.org/licenses/MIT)'
+__author__ = 'Martin Hosken'
+__version__ = '0.0.1'
 
-The module pulls attribute strings from the calling module to help it.
 '''
 
 import sys, argparse, shlex, os
