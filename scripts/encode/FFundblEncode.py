@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-'''FontForge: Double encode glyphs based on double encoding data in a file
+'''FontForge: Re-encode double-encoded glyphs based on double encoding data in a file
 Lines in file should look like: "LtnSmARetrHook",U+F236,U+1D8F'''
 __url__ = 'http://projects.palaso.org/projects/pysilfont'
 __copyright__ = 'Copyright (c) 2013, SIL International  (http://www.sil.org)'
@@ -24,28 +24,30 @@ def doit(font, args) :
 	logf = open(args.log, 'w')
 # Create dbl_encode list from the input file
 	dbl_encode = {}
-	for line in inpf.readlines() :
+	for line in inpf.readlines():
 		glyphn, pua_usv_str, std_usv_str = line.strip().split(",")  # will exception if not 3 elements
 		if glyphn[0] in '"\'' : glyphn = glyphn[1:-1]               # slice off quote marks, if present
 		pua_usv, std_usv = int(pua_usv_str[2:], 16), int(std_usv_str[2:], 16)
 		dbl_encode[glyphn] = [std_usv, pua_usv]
 	inpf.close()
 
-	for glyph in sorted(dbl_encode.keys()) :
-		if glyph not in font:
-			logf.write("Glyph %s not in font\n" % (glyph))
-			continue
-		g = font[glyph]
-		ousvs=[g.unicode]
-		oalt=g.altuni
-		if oalt != None:
-			for au in oalt:
-				ousvs.append(au[0]) # (may need to check variant flag)
-		dbl = dbl_encode[glyph]
-		g.unicode = dbl[0]
-		g.altuni = ((dbl[1],),)
-		logf.write("encoding for %s changed: %s -> %s\n" % (glyph, ousvs, dbl))
+	for glyph in sorted(dbl_encode.keys()):
+		logf.write (reincode(font,glyph,dbl_encode[glyph][0]))
+		logf.write (reincode(font,glyph+"Dep",dbl_encode[glyph][1]))
 	logf.close()
 	return font
+
+def reincode(font,glyph,usv):
+	if glyph not in font:
+		return ("Glyph %s not in font\n" % (glyph))
+	g = font[glyph]
+	ousvs=[g.unicode]
+	oalt=g.altuni
+	if oalt != None:
+		for au in oalt:
+			ousvs.append(au[0]) # (may need to check variant flag)
+	g.unicode = usv
+	g.altuni = None
+	return ("encoding for %s changed: %s -> %s\n" % (glyph, ousvs, usv))
 
 execute(doit, options=opts)

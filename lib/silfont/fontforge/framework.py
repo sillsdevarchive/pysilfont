@@ -9,8 +9,6 @@ __license__ = 'Released under the MIT License (http://opensource.org/licenses/MI
 __author__ = 'Martin Hosken'
 __version__ = '0.0.1'
 
-'''
-
 import sys, argparse, shlex, os
 import fontforge
 
@@ -74,4 +72,5 @@ def _worker(data, font = None) :
 		args = None
 	f = fn(font, args)
 	if f and hasattr(args, 'outfont') :
+		print "Saving to "+ args.outfont
 		f.save(args.outfont)
