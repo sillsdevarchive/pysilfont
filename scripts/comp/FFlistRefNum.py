@@ -6,18 +6,15 @@ __license__ = 'Released under the MIT License (http://opensource.org/licenses/MI
 __author__ = 'David Raymond'
 __version__ = '0.0.1'
 
-import fontforge, sys, string
 from silfont.fontforge.framework import execute
 
-opts = [
-	('-o','--output',{'help': 'Output text file'})
-	]
+argspec = [
+	('ifont',{'help': 'Input font file'}, {'type': 'infont'}),
+	('-o','--output',{'help': 'Output text file'}, {'type': 'outfile', 'def': 'RefNum.txt'})]
 
-
-def doit(font, args):
-	if not args.output : args.output = args.infont.replace('.sfd', 'RefNum.txt')
-	print 'Opening ' + args.output
-	outf = open(args.output, 'w')
+def doit(args) :
+	font = args.ifont
+	outf = args.output
 
 	outf.write("# glyphs with number of components\n\n")
 	for glyph in font:
@@ -33,4 +30,4 @@ def doit(font, args):
 
 	print "Done!"
 
-execute(doit, options = opts)
+execute(doit, argspec)

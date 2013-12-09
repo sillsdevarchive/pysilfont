@@ -6,24 +6,29 @@ __license__ = 'Released under the MIT License (http://opensource.org/licenses/MI
 __author__ = 'David Raymond'
 __version__ = '0.0.1'
 
-import fontforge, sys, string, xml.sax
+import xml.sax
 from silfont.fontforge import XmlFF
 from silfont.fontforge.framework import execute
 
-opts = [
-	('-i','--input',{'help': 'Input gsi.xml file'}),
-	('-o','--output',{'dest': 'outfont', 'help': 'Output the font here'}),
-	('-l','--log',{'help': 'Log file to output'})]
+argspec = [
+	('ifont',{'help': 'Input font file'}, {'type': 'infont'}),
+	('ofont',{'help': 'Output font file','nargs': '?' }, {'type': 'outfont', 'def': 'new'}),
+	('-i','--input',{'help': 'Input gsi.xml file'}, {'type': 'filen', 'def': 'gsi.xml'}),
+	('-l','--log',{'help': 'Log file'}, {'type': 'outfile', 'def': 'setPSnames.log'})]
 
-def doit(font, args) :
-	if not args.log : args.log = args.infont.replace('.sfd', 'setPSnames.log')
-	print 'Opening ' + args.log
-	logf = open(args.log, 'w')
+def doit(args) :
+	font=args.ifont
+	logf = args.log
 # Parse the glyph supplemental info file
-	if not args.input : args.input = args.infont.replace('.sfd', 'gsi.xml')
 	parser = xml.sax.make_parser()
 	handler = XmlFF.CollectXmlInfo()
 	parser.setContentHandler(handler)
+	print 'Parsing XML file: ',args.input
+	try :
+		parser.parse(args.input)
+	except Exception as e :
+		print e
+		sys.exit()
 	parser.parse(args.input)
 	gsi_dict = handler.get_data_dict()
 
@@ -45,10 +50,5 @@ def doit(font, args) :
 	logf.close()
 	return font
 
-def UniStr(u):
-	if u:
-		return "U+{0:04X}".format(u)
-	else:
-		return "No USV" #length same as above
+execute(doit, argspec)
 
-execute(doit, options = opts)

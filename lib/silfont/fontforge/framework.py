@@ -1,5 +1,4 @@
 #!/usr/bin/python
-
 '''Module to wrap a fontforge type script so that it can be used either standalone
 or as a macro within fontforge. Handles commandline attribute parsing.
 The module pulls attribute strings from the calling module to help it.'''
@@ -9,68 +8,90 @@ __license__ = 'Released under the MIT License (http://opensource.org/licenses/MI
 __author__ = 'Martin Hosken'
 __version__ = '0.0.1'
 
-import sys, argparse, shlex, os
-import fontforge
+import sys, argparse, os, fontforge
 
-def execute(fn, options = None) :
-	'''There are various things to do in the calling module/script:
-	* Set the docstring for the module/script
-	* Optionally set __version__
-	* set __menuentry__ for fontforge to add this to the macro menu
-	'''
+def execute(fn, argspec) :
+
 	if fontforge.hasUserInterface() :
-		fontforge.registerMenuItem(_worker, None, (fn, options), "Font", None, fn.__module__.__menuentry__)
-	else :
-		_worker((fn, options))
+		return # Exceute is for command-line use
 
-def _findinlist(l, o) :
-	for c, a in enumerate(l) :
-		if a[0] == o : return c
-	return -1
-
-def _worker(data, font = None) :
-	(fn, options) = data
-	inui = fontforge.hasUserInterface()
-	parser = None
 	basemodule = sys.modules[fn.__module__]
 	poptions = {}
-	if inui : poptions['prog'] = ''
 	poptions['description'] = basemodule.__doc__
 	if hasattr(basemodule, '__version__') : poptions['epilog'] = "Version: " + basemodule.__version__
-	fixedopts = [
-		('infont', {'help' : 'Input font file'}),
-		('outfont', {'nargs' : '?', 'help' : 'Output font file'})]
-	if options :
-		for c,o in enumerate(options) :
-			test = o[0]
-			if 'dest' in o[-1] : test = o[-1]['dest']
-			ind = _findinlist(fixedopts, test)
-			if ind >= 0 :
-				if inui : del options[c]
-				else : del fixedopts[ind]
-	else :
-		options = []
-	if not inui :
-		for c, o in enumerate(fixedopts) :
-			options.insert(c, o)
 
-	if options :
-		parser = argparse.ArgumentParser(**poptions)
-		for o in options :
-			kwds = o[-1]
-			parser.add_argument(*o[:-1], **kwds)
-	if parser :
-		if inui :
-			msg = parser.format_help()
-			ans = fontforge.askString(basemodule.__menuentry__, msg)
-			args = parser.parse_args(shlex.split(ans))       # split using shell rules
-		else :
-			args = parser.parse_args()
-			if hasattr(args, 'infont') :
-				font = fontforge.open(os.path.abspath(args.infont))
-	else :
-		args = None
-	f = fn(font, args)
-	if f and hasattr(args, 'outfont') :
-		print "Saving to "+ args.outfont
-		f.save(args.outfont)
+	parser = argparse.ArgumentParser(**poptions)
+
+# Process the supplied argument specs, add args to parser, store other info in arginfo
+	arginfo = []
+	for c,a in enumerate(argspec) :
+		# Process all but last tuple entry as argparse arguments
+		nonkwds = a[:-2]
+		kwds = a[-2]
+		parser.add_argument(*nonkwds, **kwds)
+		# Create dict of framework keywords using argument name
+		argn = nonkwds[-1] # Find the argument name from first 1 or 2 tuple entries
+		if argn[0:2] == "--" : argn = argn[2:] # Will start with -- for options
+		ainfo=fkwds=a[-1]
+		ainfo['name']=argn
+		arginfo.append(ainfo)
+
+# Parse the command-line arguments. If errors or -h used, procedure will exit here
+	args = parser.parse_args()
+
+# Process the argument values returned from argparse
+	(fppath,fpbase,fpext)=_splitfn(getattr(args,arginfo[0]['name'])) # First pos param use for defaulting
+	outfont = None
+
+	for c,ainfo in enumerate(arginfo) :
+		aval = getattr(args,ainfo['name'])
+		atype = ainfo['type'] if 'type' in ainfo else None
+		adef = ainfo['def'] if 'def' in ainfo else None
+		if c <> 0 : #Handle defaults for all but first positional parameter
+			if adef :
+				if not aval : aval=""
+				(apath,abase,aext)=_splitfn(aval)
+				(dpath,dbase,dext)=_splitfn(adef) # dbase should be None
+				if not apath : apath=fppath
+				if not abase : abase = fpbase + dbase
+				if not aext :
+					if dext :
+						aext = dext
+					elif atype=='outfont' : aext = fpext
+				aval = os.path.join(apath,abase+aext)
+		# Open files/fonts
+		if atype=='infont' :
+			print 'Opening font: ',aval
+			try :
+				aval=fontforge.open(aval)
+			except Exception as e :
+				print e
+				sys.exit()
+		elif atype=='infile' :
+			print 'Opening file for input: ',aval
+			try :
+				aval=open(aval,"r")
+			except Exception as e :
+				print e
+				sys.exit()
+		elif atype=='outfile' :
+			print 'Opening file for output: ',aval
+			try :
+				aval=open(aval,"w")
+			except Exception as e :
+				print e
+				sys.exit()
+		elif atype=='outfont' : outfont=aval # Can only be one outfont
+
+		setattr(args,ainfo['name'],aval)
+
+# All arguments processed, now call the main function
+	result = fn(args)
+	if outfont :
+		print "Saving font to " + outfont
+		result.save(outfont)
+
+def _splitfn(fn): # Split filename into path, base and extension
+	(path,base) = os.path.split(fn)
+	(base,ext) = os.path.splitext(base)
+	return (path,base,ext)

@@ -6,25 +6,17 @@ __license__ = 'Released under the MIT License (http://opensource.org/licenses/MI
 __author__ = 'David Raymond'
 __version__ = '0.0.1'
 
-import fontforge, sys, string
 from silfont.fontforge.framework import execute
 
-opts = [
-	('-o','--output',{'help': 'Output text file'})
-	]
+argspec = [
+	('ifont',{'help': 'Input font file'}, {'type': 'infont'}),
+	('-o','--output',{'help': 'Output text file'}, {'type': 'outfile', 'def': 'Gnames.txt'})]
 
-def doit(font, args) :
-	if not args.output : args.output = args.infont.replace('.sfd', 'Gnames.txt')
-	print 'Opening ' + args.output
-	outf = open(args.output, 'w')
-
-	# Process unicode and altunicode for all glyphs
-	usvs={}
-	for glyph in font:
-		g = font[glyph]
+def doit(args) :
+	outf = args.output
+	for glyph in args.ifont:
+		g = args.ifont[glyph]
 		outf.write('%s: %s, %s\n' % (glyph, g.encoding, g.glyphname))
-
 	outf.close()
-	print "Done!"
 
-execute(doit, options = opts)
+execute(doit, argspec)

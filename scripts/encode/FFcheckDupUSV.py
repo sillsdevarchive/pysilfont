@@ -6,17 +6,15 @@ __license__ = 'Released under the MIT License (http://opensource.org/licenses/MI
 __author__ = 'David Raymond'
 __version__ = '0.0.1'
 
-import fontforge, sys, string
 from silfont.fontforge.framework import execute
 
-opts = [
-	('-o','--output',{'help': 'Output text file'})
-	]
+argspec = [
+	('ifont',{'help': 'Input font file'}, {'type': 'infont'}),
+	('-o','--output',{'help': 'Output text file'}, {'type': 'outfile', 'def': 'DupUSV.txt'})]
 
-def doit(font, args) :
-	if not args.output : args.output = args.infont.replace('.sfd', 'DupUSV.txt')
-	print 'Opening ' + args.output
-	outf = open(args.output, 'w')
+def doit(args) :
+	font = args.ifont
+	outf = args.output
 
 	# Process unicode and altunicode for all glyphs
 	usvs={}
@@ -51,16 +49,14 @@ def doit(font, args) :
 
 def UniStr(u):
 	if u:
-		return "U+" + string.zfill(string.upper(hex(u)[2:]), 4)
-
+		return "U+{0:04X}".format(u)
 	else:
 		return "No USV" #length same as above
 
 def AddUSV(usvs,usv,glyph):
 	if not usvs.has_key(usv):
-
 		usvs[usv] = [glyph]
 	else:
 		usvs[usv].append(glyph)
 
-execute(doit, options = opts)
+execute(doit, argspec)

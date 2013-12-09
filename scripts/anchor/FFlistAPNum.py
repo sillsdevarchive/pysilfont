@@ -6,18 +6,15 @@ __license__ = 'Released under the MIT License (http://opensource.org/licenses/MI
 __author__ = 'David Raymond'
 __version__ = '0.0.1'
 
-import fontforge, sys
 from silfont.fontforge.framework import execute
 
-opts = [
-	('-o','--output',{'help': 'Output text file'})
-	]
+argspec = [
+	('ifont',{'help': 'Input font file'}, {'type': 'infont'}),
+	('-o','--output',{'help': 'Output text file'}, {'type': 'outfile', 'def': 'APnum.txt'})]
 
-
-def doit(font, args) :
-	if not args.output : args.output = args.infont.replace('.sfd', 'APnum.txt')
-	print 'Opening ' + args.output
-	outf = open(args.output, 'w')
+def doit(args) :
+	font = args.ifont
+	outf = args.output
 
 	# Make a list of glyphs and number of anchor points
 	AP_lst = []
@@ -38,4 +35,4 @@ def AP_cmp(a, b): # Comparision to sort first by number of attachment points) th
 	else:
 		return cmp(a[0], b[0])
 
-execute(doit, options = opts)
+execute(doit, argspec)

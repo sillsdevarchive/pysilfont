@@ -9,14 +9,14 @@ __version__ = '0.0.1'
 import fontforge, types, sys
 from silfont.fontforge.framework import execute
 
-opts = [
-	('-o','--output',{'help': 'Output text file'})
-	]
+argspec = [
+	('font',{'help': 'Input font file'}, {'type': 'infont'}),
+	('-o','--output',{'help': 'Output text file'}, {'type': 'outfile', 'def': 'glyphinfo.txt'})]
 
-def doit(font, args) :
-	if not args.output : args.output = args.infont.replace('.sfd', 'glyphinfo.txt')
-	print 'Opening ' + args.output
-	outf = open(args.output, 'w')
+
+def doit(args) :
+	font=args.font
+	outf = args.output
 
 	glyphn = raw_input("Glyph name or number: ")
 
@@ -58,4 +58,4 @@ def doit(font, args) :
 	print "done"
 	outf.close
 
-execute(doit, options = opts)
+execute(doit, argspec)

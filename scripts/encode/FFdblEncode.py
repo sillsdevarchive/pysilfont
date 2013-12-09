@@ -7,22 +7,19 @@ __license__ = 'Released under the MIT License (http://opensource.org/licenses/MI
 __author__ = 'David Raymond'
 __version__ = '0.0.1'
 
-import fontforge
 from silfont.fontforge.framework import execute
 
-opts = [
-	('-i','--input',{'help': 'Input CSV text file'}),
-	('-o','--output',{'dest': 'outfont', 'help': 'Output the font here'}),
-	('-l','--log',{'help': 'Log file to output'})]
+argspec = [
+	('ifont',{'help': 'Input font file'}, {'type': 'infont'}),
+	('ofont',{'help': 'Output font file','nargs': '?' }, {'type': 'outfont', 'def': 'new'}),
+	('-i','--input',{'help': 'Input csv text file'}, {'type': 'infile', 'def': 'DblEnc.txt'}),
+	('-l','--log',{'help': 'Log file'}, {'type': 'outfile', 'def': 'DblEnc.log'})]
 
-def doit(font, args) :
-	if not args.input : args.input = args.infont.replace('.sfd', 'DblEnc.txt')
-	if not args.log : args.log = args.infont.replace('.sfd', 'DblEnc.log')
-	print 'Opening ' + args.input
-	inpf = open(args.input, 'r')
-	print 'Opening ' + args.log
-	logf = open(args.log, 'w')
-# Create dbl_encode list from the input file
+def doit(args) :
+	font = args.ifont
+	inpf = args.input
+	logf = args.log
+#Create dbl_encode list from the input file
 	dbl_encode = {}
 	for line in inpf.readlines() :
 		glyphn, pua_usv_str, std_usv_str = line.strip().split(",")  # will exception if not 3 elements
@@ -48,4 +45,4 @@ def doit(font, args) :
 	logf.close()
 	return font
 
-execute(doit, options=opts)
+execute(doit, argspec)
