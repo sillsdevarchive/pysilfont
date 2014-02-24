@@ -6,24 +6,25 @@ __license__ = 'Released under the MIT License (http://opensource.org/licenses/MI
 __author__ = 'David Raymond'
 __version__ = '0.0.1'
 
-import fontforge, types, sys
+import fontforge
 
-def selGlyphs(data,fontname) :
+def colGlyphs(data,fontname) :
 	# data and fontname are values passed automatically when called as a menu item - see docs for registerMenuItem
 	# They are not used by the function
 
 	font = fontforge.activeFont()
-	print "Deselecting Glyphs" # Output from print statements will only appear when FF is called via a terminal window
-	font.selection.none() # Deselect all to start with
-	print "Selecting Glyphs"
+	print "Toggling colour of glyphs with LtnCapA in their name" # Output from print statements will only appear when FF is called via a terminal window
 
 	for glyph in font:
 		g = font[glyph]
-		if glyph.find('LtnCapC') >= 0: # Selects all glyphs with the string in their name
+		if glyph.find('LtnCapA') >= 0: # Selects all glyphs with the string in their name
 			#print glyph
-			font.selection.select(("more",),glyph)
+			if g.color == 0x00FF00:
+				g.color = 0xFF0000
+			else :
+				 g.color = 0x0000FF
 
-	print "Glyph's selected"
+	print "Glyph's coloured"
 
 def renameGlyph(data,fontname,old,new) :
 	font = fontforge.activeFont()
