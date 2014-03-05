@@ -16,7 +16,7 @@ def colLtnAGlyphs() :
 		g = font[glyph]
 		if glyph.find('LtnCapA') >= 0:
 			if g.color <> 0x00FF00:
-				g.color = 0x00FF00 # Red
+				g.color = 0x00FF00 # Green
 			else :
 				 g.color = 0xFFFFFF # White
 
@@ -29,10 +29,10 @@ def markOverlaps() :
 	for glyph in font:
 		g = font[glyph]
 		if g.selfIntersects() :
-			if g.color <> 0xFF0001:
-				g.color = 0xFF0001 # Red
+			if g.color <> 0xFF0000:
+				g.color = 0xFF0000 # Red
 			else :
-				 g.color = 0xFFFFFF # Blue
+				g.color = 0xFFFFFF # White
 
 	print "Glyph's coloured"
 

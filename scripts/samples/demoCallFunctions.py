@@ -9,9 +9,10 @@ __version__ = '0.0.1'
 import sys, os, fontforge
 sys.path.append(os.path.join(os.environ['HOME'], 'src/pysilfont/scripts'))
 import  samples.demoFunctions # Loads demo.py module from src/pysilfont/scripts/samples
-reload (samples.demoFunctions) # Reload the demo module each time you execute the script to pick up any recent edits
+#reload (samples.demoFunctions) # Reload the demo module each time you execute the script to pick up any recent edits
 
 def callFunctions(functionGroup) :
+	print functionGroup
 	funcList=samples.demoFunctions.functionList()[functionGroup]
 	i=0
 	for tuple in funcList :
