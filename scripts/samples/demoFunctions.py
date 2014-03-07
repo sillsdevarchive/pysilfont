@@ -31,6 +31,19 @@ def markOverlaps(font) :
 				g.color = 0xFFFFFF # White
 	print "Glyphs coloured"
 
+def markScaled(font) :
+	print "Toggling colour of glyphs with scaled components"
+	for glyph in font:
+		g = font[glyph]
+		for ref in g.references:
+			transform=ref[1]
+			if transform[0] != 1.0 or transform[3] != 1.0 :
+				if g.color <> 0xFF0000:
+					g.color = 0xFF0000 # Red
+				else :
+					g.color = 0xFFFFFF # White
+	print "Glyphs coloured"
+
 def clearColours(font) :
 	for glyph in font :
 		g = font[glyph]
@@ -49,6 +62,7 @@ def functionList() :
 		"Colour Glyphs":("Font",
 		("colLtnAGlyphs","Colour Latin A Glyphs",colLtnAGlyphs),
 		("markOverlaps","Mark Overlaps",markOverlaps),
+		("markScaled","Mark Scaled",markScaled),
 		("clearColours","Clear all colours",clearColours)),
 		"Group with single item":("Font",
 		("clearColours","Clear all colours",clearColours))}

@@ -57,7 +57,7 @@ def execute(fn, argspec) :
 				if not aext :
 					if dext :
 						aext = dext
-					elif atype=='outfont' : aext = fpext
+					elif (atype=='outfont' or atype=='infont') : aext = fpext
 				aval = os.path.join(apath,abase+aext)
 		# Open files/fonts
 		if atype=='infont' :
@@ -88,8 +88,11 @@ def execute(fn, argspec) :
 # All arguments processed, now call the main function
 	result = fn(args)
 	if outfont :
-		print "Saving font to " + outfont
-		result.save(outfont)
+		if result is None :
+			print "No font output"
+		else :
+			print "Saving font to " + outfont
+			result.save(outfont)
 
 def _splitfn(fn): # Split filename into path, base and extension
 	(path,base) = os.path.split(fn)
